@@ -1,21 +1,48 @@
-import { useState } from "react";
+import { useState , useEffect} from "react";
 import Navbar from "./components/Navbar";
 import { v4 as uuidv4 } from "uuid";
 
 function App() {
   const [todo, setTodo] = useState("");
   const [todos, setTodos] = useState([]);
+const [showFinished,setshowFinished] = useState(true)
 
 
-  const handleEdit = () => {
-   
+useEffect(() => {
+  let todoString = localStorage.getItem("todos")
+  if(todoString) {
+  let todos = JSON.parse(localStorage.getItem("todos"))
+  setTodos(todos)
+  }
+}, [])
 
+
+
+  const saveTols = (params) => {
+    localStorage.setItem("todos", JSON.stringify(todos))
+  }
+
+  const toggleFinished = (params) => {
+
+  }
+
+
+  const handleEdit = (e,id) => {
+    let t = todos.filter(i=>i.id === id)
+    setTodo(t[0].todo)
+    let newTodos = todos.filter(item=> {
+      return item.id!==id
+    });
+    setTodos(newTodos);
+    saveTols()
+  }
   
   const handleDelete = (e, id) => {
     let newTodos = todos.filter(item=> {
       return item.id!==id
     });
     setTodos(newTodos);
+    saveTols()
   };
     
     
@@ -23,7 +50,7 @@ function App() {
   const handleAdd = () => {
     setTodos([...todos, { id: uuidv4(), todo, isCompleted: false }]);
     setTodo("");
-    console.log(todos);
+    saveTols()
   };
 
   const handleChange = (e) => {
@@ -32,7 +59,6 @@ function App() {
   const handleCheckbox = (e) => {
     console.log(e, e.target)
     let id = e.target.name;
-    console.log('The id is ${id}');
     let index = todos.findIndex((item) => {
       return item.id === id;
     });
@@ -40,7 +66,7 @@ function App() {
     let newTodos = [...todos];
     newTodos[index].isCompleted = !newTodos[index].isCompleted;
     setTodos(newTodos);
-    console.log(newTodos)
+    saveTols()
   };
 
   return (
@@ -56,12 +82,13 @@ function App() {
             className="w-1/2"
           />
           <button
-            onClick={handleAdd}
-            className="bg-violet-800 hover:bg-violet-950 p-2 py-1 text-sm font-bold text-white rounded-md mx-6"
+            onClick={handleAdd} disabled={todo.length<=3}
+            className="bg-violet-800 disabled:bg-violet-700 hover:bg-violet-950 p-2 py-1 text-sm font-bold text-white rounded-md mx-6"
           >
             Save 
           </button>
         </div>
+        <input type="checkbox" checked={showFinished}/>Show Finished
         <h2 className="text-lg font-bold">Your ToDos</h2>
 
         <div className="todos">
@@ -74,16 +101,16 @@ function App() {
                 name={item.id}
                 onChange={handleCheckbox}
                 type="checkbox"
-                value={item.isCompleted}
+                checked={item.isCompleted}
                 id=""
               />
               <div className={item.isCompleted ? "line-through" : ""}>
                 {item.todo}
               </div>
               </div>
-              <div className="buttons">
+              <div className="buttons flex h-full">
                 <button
-                  onClick={handleEdit}
+                  onClick={(e)=>{handleEdit(e, item.id)}}
                   className="bg-violet-800 hover:bg-indigo-950 p-2 py-1 text-sm font-bold text-white rounded-md mx-1"
                 >
                   Edit
@@ -103,5 +130,4 @@ function App() {
     </>
   );
 }
-
 export default App;
