@@ -22,7 +22,8 @@ useEffect(() => {
     localStorage.setItem("todos", JSON.stringify(todos))
   }
 
-  const toggleFinished = (params) => {
+  const toggleFinished = (e) => {
+    setshowFinished(!showFinished)
 
   }
 
@@ -72,30 +73,30 @@ useEffect(() => {
   return (
     <>
       <Navbar />
-      <div className="container mx-auto my-5 rounded-xl p-5 bg-violet-100 min-h-[80vh]">
-        <div className="addTodo" my-5>
+      <div className="container mx-auto my-5 rounded-xl p-5 bg-violet-100 min-h-[80vh] w-1/2">
+        <div className="addTodo" my-5 flex flex-col gap-4>
           <h2 className="text-lg font-bold">Add a Todo</h2>
           <input
             onChange={handleChange}
             value={todo}
             type="text"
-            className="w-1/2"
+            className="w-full"
           />
           <button
             onClick={handleAdd} disabled={todo.length<=3}
-            className="bg-violet-800 disabled:bg-violet-700 hover:bg-violet-950 p-2 py-1 text-sm font-bold text-white rounded-md mx-6"
+            className="bg-violet-800 disabled:bg-violet-700 hover:bg-violet-900 disabled:via-violet-950 p-2 py-1 text-sm font-bold text-white rounded-md mx-6"
           >
             Save 
           </button>
         </div>
-        <input type="checkbox" checked={showFinished}/>Show Finished
+        <input onChange={toggleFinished} type="checkbox" checked={showFinished}/>Show Finished
         <h2 className="text-lg font-bold">Your ToDos</h2>
 
         <div className="todos">
         {todos.length===0 && <div className="m-5">No ToDos To Display</div>}
 
           {todos.map((item) => {
-            return <div key={item.id} className="todo flex w-1/4 my-3 justify-between">
+            return (showFinished || !item.isCompleted) && <div key={item.id} className={"todo flex w-1/4 my-3 justify-between"}>
               <div className="flex gap-5">
               <input
                 name={item.id}
