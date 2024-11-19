@@ -92,14 +92,14 @@ useEffect(() => {
 
 
         
-        <input onChange={toggleFinished} type="checkbox" checked={showFinished}/>Show Finished
-        <h2 className="text-lg font-bold">Your ToDos</h2>
-
+        <input className="my-4" id="show" onChange={toggleFinished} type="checkbox" checked={showFinished}/>
+        <label className="mx-2" htmlFor="show">Show Finished</label>
+        <div className="h-[1px] bg-black opacity-15 w-[90%] mx-auto my-2"></div>
+        <h2 className="text-2xl font-bold">Your ToDos</h2>
         <div className="todos">
         {todos.length===0 && <div className="m-5">No ToDos To Display</div>}
-
-          {todos.map((item) => {
-            return (showFinished || !item.isCompleted) && <div key={item.id} className={"todo flex w-1/4 my-3 justify-between"}>
+          {todos.map(item => {
+            return (showFinished || !item.isCompleted) && <div key={item.id} className={"todo flex my-3 justify-between"}>
               <div className="flex gap-5">
               <input
                 name={item.id}
@@ -114,16 +114,16 @@ useEffect(() => {
               </div>
               <div className="buttons flex h-full">
                 <button
-                  onClick={(e)=>{handleEdit(e, item.id)}}
-                  className="bg-violet-800 hover:bg-indigo-950 p-2 py-1 text-sm font-bold text-white rounded-md mx-1"
+                  onClick={(e)=>{handleEdit(e, item.id)}
+                  className="bg-violet-800 hover:bg-violet-950 p-2 py-1 text-sm font-bold text-white rounded-md mx-1"
                 >
-                  Edit
+                  <FaEdit/>
                 </button>
                 <button
                   onClick={(e)=>{handleDelete(e, item.id)}}
-                  className="bg-violet-800 hover:bg-indigo-950 p-2 py-1 text-sm font-bold text-white rounded-md mx-1"
+                  className="bg-violet-800 hover:bg-violet-950 p-2 py-1 text-sm font-bold text-white rounded-md mx-1"
                 >
-                  Delete
+                  <AiFillDelete/>
                 </button>
               </div>
             </div>
@@ -132,6 +132,6 @@ useEffect(() => {
         </div>
       </div>
     </>
-  );
+  )
 }
-export default App;
+export default App
