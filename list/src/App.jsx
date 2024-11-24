@@ -5,9 +5,9 @@ import { AiFillDelete } from "react-icons/ai";
 import { v4 as uuidv4 } from "uuid";
 
 function App() {
-  const [todo, setTodo] = useState("");
-  const [todos, setTodos] = useState([]);
-const [showFinished,setshowFinished] = useState(true)
+  const [todo, setTodo] = useState("")
+  const [todos, setTodos] = useState([])
+  const [showFinished,setshowFinished] = useState(true)
 
 
 useEffect(() => {
@@ -18,7 +18,7 @@ useEffect(() => {
   }
 }, [])
 
-  const saveTols = (params) => {
+  const saveToLS = (params) => {
     localStorage.setItem("todos", JSON.stringify(todos))
   }
 
@@ -34,7 +34,7 @@ useEffect(() => {
       return item.id!==id
     });
     setTodos(newTodos);
-    saveTols()
+    saveToLS()
   }
   
   const handleDelete = (e, id) => {
@@ -42,12 +42,13 @@ useEffect(() => {
       return item.id!==id
     });
     setTodos(newTodos)
-    saveTols()
+    saveToLS()
   }
+
   const handleAdd = ()=> {
     setTodos([...todos, { id: uuidv4(), todo, isCompleted: false }])
-    setTodo("");
-    saveTols()
+    setTodo("")
+    saveToLS()
   }
 
   const handleChange = (e) => {
@@ -61,13 +62,13 @@ useEffect(() => {
     })
     let newTodos = [...todos];
     newTodos[index].isCompleted = !newTodos[index].isCompleted;
-    setTodos(newTodos);
-    saveTols()
+    setTodos(newTodos)
+    saveToLS()
   }
 
   return (
-    <>
-      <Navbar />
+    < >
+      <Navbar/>
       <div className="mx-3 md:container md:mx-auto my-5 rounded-xl p-5 bg-violet-100 min-h-[80vh] md:w-[35%]">
         <h1 className="font-bold text-center text-3xl">iTask - Manage your todos at one place</h1>
         <div className="addTodo my-5 flex flex-col gap-4">
